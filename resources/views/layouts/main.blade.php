@@ -39,13 +39,33 @@
                         <a class="nav-link active" aria-current="page" href="/events/create">Criar Eventos</a>
                     </li>
 
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Meus eventos</a>
+                        </li>
+
+                        <li class="nav-item ms-lg-3">
+                            <form action="/logout" method="POST">
+                                @csrf
+                                <a href="/logout"
+                                   class="nav-link"
+                                   onclick="event.preventDefault(); this.closest('form').submit();">
+                                    Sair
+                                </a>
+                            </form>
+                        </li>
+                    @endauth
+
+                    @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Entrar</a>
+                        <a class="nav-link" href="/login">Entrar</a>
                     </li>
 
                     <li class="nav-item ms-lg-3">
-                        <a href="/" class="btn btn-primary rounded-pill px-4">Cadastrar</a>
+                        <a href="/register" class="btn btn-primary rounded-pill px-4">Cadastrar</a>
                     </li>
+
+                    @endguest
 
                 </ul>
             </div>

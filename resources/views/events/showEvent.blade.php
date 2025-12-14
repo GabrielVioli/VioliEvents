@@ -22,7 +22,7 @@
                 </p>
 
                 <p class="event-owner">
-                    <ion-icon name="star-outline"></ion-icon> Dono do Evento
+                    <ion-icon name="star-outline"></ion-icon> Dono do Evento: {{$user->name}}
                 </p>
 
                 <p>

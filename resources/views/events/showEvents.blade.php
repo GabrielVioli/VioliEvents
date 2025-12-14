@@ -4,6 +4,8 @@
 
 @section('content')
 
+    @csrf
+
     <div id="search-container" class="col-md-12 text-center">
         <h1>Busque um evento</h1>
     <form action="/" method="GET" class="search-form w-50 mx-auto">
@@ -38,12 +40,8 @@
                         <div class="card card-hover h-100 shadow-sm border-0 rounded-3 overflow-hidden">
                             <img src="{{ asset($event->image) }}" alt="{{ $event->title }}">
                             <div class="card-body d-flex flex-column">
-                                <p class="card-date text-primary fw-bold small">10/09/202X</p>
+                                <p class="card-date text-primary fw-bold small"> {{ date('d/m/Y'), strtotime($event->date)}}</p>
                                 <h5 class="card-title">{{ $event->title }}</h5>
-                                <p class="mb-1 text-muted small">
-                                    <i class="bi bi-calendar-event me-1"></i>
-                                    Data do evento: {{ date('d/m/Y'), strtotime($event->date)}}
-                                </p>
                                 <p class="card-participants text-muted small">X Participantes</p>
                                 <a href="/events/{{ $event->id }}" class="btn btn-primary mt-auto">Saber mais</a>
                             </div>
