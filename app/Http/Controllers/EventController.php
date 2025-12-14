@@ -73,5 +73,11 @@ class EventController extends Controller
 
         return redirect('/dashboard')->with('success', 'Evento removido com sucesso!');
     }
+
+    public function edit($id) {
+
+        $event = Event::findOrFail($id);
+        return view('events.editEvent', ['event' => $event]);
+    }
 }
 
