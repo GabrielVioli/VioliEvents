@@ -1,91 +1,95 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="/css/styles.css">
-
-    <!--Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <!--fontes-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Roboto" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@yield('title')</title>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
-        <div class="container">
 
-            <img src="/img/logo.jpg" alt="HDC Events" height="40">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
-            <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
-                <span class="text-primary">EVENTOS</span>
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/events/create">Criar Eventos</a>
-                    </li>
-
-                    @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="/dashboard">Meus eventos</a>
-                        </li>
-
-                        <li class="nav-item ms-lg-3">
-                            <form action="/logout" method="POST">
-                                @csrf
-                                <a href="/logout"
-                                   class="nav-link"
-                                   onclick="event.preventDefault(); this.closest('form').submit();">
-                                    Sair
-                                </a>
-                            </form>
-                        </li>
-                    @endauth
-
-                    @guest
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Entrar</a>
-                    </li>
-
-                    <li class="nav-item ms-lg-3">
-                        <a href="/register" class="btn btn-primary rounded-pill px-4">Cadastrar</a>
-                    </li>
-
-                    @endguest
-
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    @if (session('success'))
-        <p class = 'msg'> {{session('success')}}</p>
-    @endif
-
-    @yield('content')
-
-    <!-- Javascript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/scripts/script.js"></script>
-    <footer>
-        <p>Gabriel &copy; 2025</p>
-    </footer>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#F2A340',
+                            dark: '#353E48',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        body { background-color: #f3f4f6; }
+        .msg-flash { animation: fadeOut 4s forwards; }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0;display: none;}
+        }
+    </style>
+
+    <link rel="icon" href="/img/logo.png" type="image/png">
+</head>
+<body class="font-sans antialiased text-gray-700 flex flex-col min-h-screen">
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+            <div class="flex-shrink-0 flex items-center gap-2">
+                <a href="/" class="flex items-center gap-2">
+                    <img src="/img/logo.png" alt="VioliEvents" class="w-10"> <span class="font-bold text-brand-dark text-xl tracking-tight">Violi Events</span>
+                </a>
+            </div>
+
+            <nav class="hidden md:flex space-x-8">
+                <a href="/" class="text-gray-500 hover:text-brand-orange px-3 py-2 font-medium transition">Eventos</a>
+                <a href="/events/create" class="text-gray-500 hover:text-brand-orange px-3 py-2 font-medium transition">Criar Evento</a>
+                @auth
+                    <a href="/dashboard" class="text-gray-500 hover:text-brand-orange px-3 py-2 font-medium transition">Meus Eventos</a>
+                    <form action="/logout" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-gray-500 hover:text-brand-orange px-3 py-2 font-medium transition">Sair</button>
+                    </form>
+                @endauth
+                @guest
+                    <a href="/login" class="text-gray-500 hover:text-brand-orange px-3 py-2 font-medium transition">Entrar</a>
+                    <a href="/register" class="text-gray-500 hover:text-brand-orange px-3 py-2 font-medium transition">Cadastrar</a>
+                @endguest
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow">
+    @if(session('msg'))
+        <div class="msg-flash fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded shadow-lg z-50">
+            {{ session('msg') }}
+        </div>
+    @endif
+
+    @yield('content')
+</main>
+
+<footer class="bg-brand-dark text-white text-center py-6 mt-12">
+    <p class="text-sm opacity-75">&copy; 2024 VioliEvents. Todos os direitos reservados.</p>
+</footer>
+
+<script src="scripts/script.js"></script>
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 </body>
 </html>

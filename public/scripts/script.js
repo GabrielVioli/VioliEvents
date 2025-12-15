@@ -1,34 +1,47 @@
-//public/scripts/script.js
+// public/js/scripts.js
 
-document.getElementById('form-evento').addEventListener('submit', function(event) {
-    event.preventDefault();
+document.addEventListener('DOMContentLoaded', function() {
 
-    let camposObrigatorios = ['title', 'date', 'city', 'description', 'image'];
-    let temErro = false;
+    const imageInput = document.getElementById('image');
+    const imagePreview = document.getElementById('image-preview');
+    const uploadPlaceholder = document.getElementById('upload-placeholder');
 
-    camposObrigatorios.forEach(function(id) {
-        let campo = document.getElementById(id);
+    if(imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
 
-        campo.classList.remove('is-invalid');
+            if(file) {
+                const reader = new FileReader();
 
-        if (!campo.value) {
-            temErro = true;
-            campo.classList.add('is-invalid');
-        }
-    });
+                reader.onload = function(e) {
+                    if(imagePreview) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.classList.remove('hidden');
+                    }
 
-    if (temErro) {
-        alert('Por favor, preencha todos os campos obrigatórios!');
-    } else {
-        this.submit();
+                    if(uploadPlaceholder) {
+                        uploadPlaceholder.classList.add('hidden');
+                    }
+
+                    let existingPreview = document.getElementById('temp-preview');
+                    if(!existingPreview) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.id = 'temp-preview';
+                        img.className = 'h-32 w-full object-cover rounded-lg';
+
+                        const label = imageInput.closest('label');
+                        const originalContent = label.querySelector('div');
+                        if(originalContent) originalContent.classList.add('hidden');
+
+                        label.appendChild(img);
+                    } else {
+                        existingPreview.src = e.target.result;
+                    }
+                }
+
+                reader.readAsDataURL(file);
+            }
+        });
     }
-});
-
-let inputs = document.querySelectorAll('.form-control');
-inputs.forEach(input => {
-    input.addEventListener('input', function() {
-        if(this.value) {
-            this.classList.remove('is-invalid');
-        }
-    });
 });

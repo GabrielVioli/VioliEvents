@@ -4,62 +4,72 @@
 
 @section('content')
 
-    <div class="col-md-10 offset-md-1">
-        <div class="row">
-            <div id="image-container" class="col-md-6">
-                <img src="{{asset($event->image)}}" class="img-fluid" alt="{{ $event->title }}">
-            </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
 
-            <div id="info-container" class="col-md-6">
-                <h1>{{ $event->title }}</h1>
-
-                <p class="event-city">
-                    <ion-icon name="location-outline"></ion-icon> {{ $event->city }}
-                </p>
-
-                <p class="events-participants">
-                    <ion-icon name="people-outline"></ion-icon> X Participantes
-                </p>
-
-                <p class="event-owner">
-                    <ion-icon name="star-outline"></ion-icon> Dono do Evento: {{$user->name}}
-                </p>
-
-                <p>
-                    <ion-icon name="calendar-outline"></ion-icon> {{date('d/m/Y', strtotime($event->date))}}
-                </p>
-
-                <p>
-                    <ion-icon name="time-outline"></ion-icon> {{date('H:i', strtotime($event->date))}}
-                </p>
-                @if(!empty($event->items))
-
-                <div class="mt-4">
-                    <h3 class="fs-5 fw-bold mb-3">O evento conta com:</h3>
-                    <ul id="item-list" class="list-unstyled">
-                        @foreach($event->items as $item)
-                                <li class="d-flex align-items-center mb-2 fs-6">
-                                    <ion-icon name="play-outline" class="text-primary me-2"></ion-icon>
-                                    {{ $item }}
-                                </li>
-                        @endforeach
-                    </ul>
+                <div class="relative h-96 lg:h-auto">
+                    <img src="{{ asset($event->image) }}" class="absolute inset-0 w-full h-full object-cover" alt="{{ $event->title }}">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent lg:hidden"></div>
+                    <div class="absolute bottom-0 left-0 p-6 text-white lg:hidden">
+                        <h1 class="text-3xl font-bold">{{ $event->title }}</h1>
+                    </div>
                 </div>
 
-                @endif
+                <div class="p-8 lg:p-12">
+                    <div class="hidden lg:block">
+                        <h1 class="text-4xl font-extrabold text-gray-900 mb-6">{{ $event->title }}</h1>
+                    </div>
 
-                @csrf
-                <form action="/events/join/{{ $event->id }}" method="POST">
-                    @csrf
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-center text-gray-700">
+                            <ion-icon name="location-outline" class="text-2xl text-brand-orange mr-3"></ion-icon>
+                            <span class="font-medium">{{ $event->city }}</span>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary" id="event-submit">
-                        Confirmar Presença
-                    </button>
-                </form>
+                        <div class="flex items-center text-gray-700">
+                            <ion-icon name="people-outline" class="text-2xl text-brand-orange mr-3"></ion-icon>
+                            <span class="font-medium">{{ count($event->users) }} Participantes</span>
+                        </div>
 
-                <div class="mt-4">
-                    <h3>Sobre o evento:</h3>
-                    <p class="event-description">{{ $event->description }}</p>
+                        <div class="flex items-center text-gray-700">
+                            <ion-icon name="calendar-outline" class="text-2xl text-brand-orange mr-3"></ion-icon>
+                            <span class="font-medium">{{ date('d/m/Y', strtotime($event->date)) }} às {{ date('H:i', strtotime($event->date)) }}</span>
+                        </div>
+
+                        <div class="flex items-center text-gray-700">
+                            <ion-icon name="star-outline" class="text-2xl text-brand-orange mr-3"></ion-icon>
+                            <span class="font-medium">Organizador: <span class="font-bold">{{ $user->name }}</span></span>
+                        </div>
+                    </div>
+
+                    <form action="/events/join/{{ $event->id }}" method="POST" class="mb-10">
+                        @csrf
+                        <button type="submit" class="w-full bg-brand-orange hover:bg-orange-600 text-white text-lg font-bold py-4 rounded-xl shadow-lg transform transition hover:-translate-y-1 flex justify-center items-center gap-2">
+                            <ion-icon name="checkmark-circle-outline" class="text-2xl"></ion-icon> Confirmar Presença
+                        </button>
+                    </form>
+
+                    @if(!empty($event->items))
+                        <div class="mb-8">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-brand-orange pl-3">O evento conta com:</h3>
+                            <ul class="grid grid-cols-2 gap-3">
+                                @foreach($event->items as $item)
+                                    <li class="flex items-center text-gray-600 bg-gray-50 p-2 rounded-lg">
+                                        <ion-icon name="play-outline" class="text-brand-orange mr-2"></ion-icon>
+                                        {{ $item }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-3 border-l-4 border-brand-orange pl-3">Sobre o evento:</h3>
+                        <p class="text-gray-600 leading-relaxed text-justify">
+                            {{ $event->description }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

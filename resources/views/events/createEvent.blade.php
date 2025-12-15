@@ -4,77 +4,79 @@
 
 @section('content')
 
-    <div id="event-create-container" class="col-md-6 offset-md-3">
-        <h1>Crie o seu evento</h1>
-
-        <form action="/events" method="POST" enctype="multipart/form-data" id="form-evento">
-            @csrf
-
-            <div class="mb-3">
-                <label for="image" class="form-label">Capa do evento:</label>
-                <input type="file" class="form-control-file" id="image" name="image">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-extrabold text-gray-900">Crie seu Evento</h1>
+                <p class="text-gray-500 mt-2">Preencha as informações abaixo para divulgar seu evento</p>
             </div>
 
-            <div class="mb-3">
-                <label for="title" class="form-label">Evento:</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Nome do evento">
-            </div>
+            <form action="/events" method="POST" enctype="multipart/form-data" class="space-y-6">
+                @csrf
 
-            <div class="mb-3">
-                <label for="date" class="form-label">Data do evento:</label>
-                <input type="datetime-local" class="form-control" id="date" name="date">
-            </div>
-
-            <div class="mb-3">
-                <label for="city" class="form-label">Cidade:</label>
-                <input type="text" class="form-control" id="city" name="city" placeholder="Local do evento">
-            </div>
-
-            <div class="mb-3">
-                <label for="private" class="form-label">O evento é privado?</label>
-                <select name="private" id="private" class="form-select">
-                    <option value="0">Não (Público)</option>
-                    <option value="1">Sim (Privado)</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="description" class="form-label">Descrição:</label>
-                <textarea name="description" id="description" class="form-control" placeholder="O que vai acontecer no evento?"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label fw-bold">Itens de infraestrutura:</label>
-
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="items[]" value="Cadeiras" id="cadeiras">
-                    <label class="form-check-label" for="cadeiras">Cadeiras</label>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Capa do evento</label>
+                    <div class="flex items-center justify-center w-full">
+                        <label for="image" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <ion-icon name="cloud-upload-outline" class="text-3xl text-gray-400 mb-2"></ion-icon>
+                                <p class="text-sm text-gray-500">Clique para fazer upload da imagem</p>
+                            </div>
+                            <input id="image" name="image" type="file" class="hidden" />
+                        </label>
+                    </div>
                 </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="items[]" value="Palco" id="palco">
-                    <label class="form-check-label" for="palco">Palco</label>
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Nome do Evento</label>
+                    <input type="text" name="title" id="title" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-orange focus:ring focus:ring-brand-orange/20 transition py-3" placeholder="Ex: Show de Rock">
                 </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="items[]" value="Cerveja Grátis" id="openbeer">
-                    <label class="form-check-label" for="openbeer">Cerveja Grátis</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                        <input type="datetime-local" name="date" id="date" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-orange focus:ring focus:ring-brand-orange/20 transition py-3">
+                    </div>
+
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
+                        <input type="text" name="city" id="city" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-orange focus:ring focus:ring-brand-orange/20 transition py-3" placeholder="Ex: São Paulo, SP">
+                    </div>
                 </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="items[]" value="Open Food" id="openfood">
-                    <label class="form-check-label" for="openfood">Open Food</label>
+                <div>
+                    <label for="private" class="block text-sm font-medium text-gray-700 mb-1">Visibilidade</label>
+                    <select name="private" id="private" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-orange focus:ring focus:ring-brand-orange/20 transition py-3 bg-white">
+                        <option value="0">Público</option>
+                        <option value="1">Privado</option>
+                    </select>
                 </div>
 
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="items[]" value="Brindes" id="brindes">
-                    <label class="form-check-label" for="brindes">Brindes</label>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                    <textarea name="description" id="description" rows="4" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-orange focus:ring focus:ring-brand-orange/20 transition" placeholder="O que vai acontecer no evento?"></textarea>
                 </div>
-            </div>
 
-            <input type="submit" class="btn btn-primary" value="Criar Evento">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Infraestrutura</label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        @php $items = ['Cadeiras', 'Palco', 'Cerveja Grátis', 'Open Food', 'Brindes']; @endphp
+                        @foreach($items as $item)
+                            <div class="flex items-center">
+                                <input type="checkbox" name="items[]" value="{{ $item }}" id="item-{{ $loop->index }}"
+                                       class="rounded border-gray-300 text-brand-orange shadow-sm focus:border-brand-orange focus:ring focus:ring-brand-orange/20 h-5 w-5">
+                                <label for="item-{{ $loop->index }}" class="ml-2 text-sm text-gray-600 cursor-pointer">{{ $item }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
 
-        </form>
+                <div class="pt-4">
+                    <input type="submit" class="w-full bg-brand-dark hover:bg-gray-900 text-white font-bold py-4 rounded-xl shadow-md transition cursor-pointer" value="Criar Evento">
+                </div>
+
+            </form>
+        </div>
     </div>
 
 @endsection

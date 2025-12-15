@@ -9,6 +9,7 @@ class EventController extends Controller
 {
     public function index() {
 
+
         $search = request('search');
         if($search) {
             $events = Event::where([
@@ -27,6 +28,24 @@ class EventController extends Controller
 
 
     public function store(Request $request) {
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'date' => 'required|date',
+            'city' => 'required',
+            'private' => 'required',
+            'description' => 'required',
+            'items' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'title.required' => 'O evento precisa de um título.',
+            'date.required' => 'A data é obrigatória.',
+            'city.required' => 'A cidade é obrigatória.',
+            'description.required' => 'A descrição é obrigatória.',
+            'items.required' => 'Selecione pelo menos um item de infraestrutura.',
+            'image.image' => 'O arquivo deve ser uma imagem válida.'
+        ]);
+
         $event = new Event();
         $event->title = $request->title;
         $event->city = $request->city;
@@ -65,7 +84,9 @@ class EventController extends Controller
         $user = auth()->user();
         $events = $user->events;
 
-        return view('events.dashboard', ['events' => $events]);
+        $eventsAsMembers = $user->eventsAsMembers;
+
+        return view('events.dashboard', ['events' => $events, 'eventsAsMembers' => $eventsAsMembers]);
     }
 
     public function destroy($id) {
@@ -109,6 +130,14 @@ class EventController extends Controller
 
         return redirect('/dashboard')->with('success', 'Sua presença está confirmada no evento '. $event->title);
 
+    }
+
+    public function leave($id) {
+        $user = auth()->user();
+
+        $user->eventsAsMembers()->detach($id);
+
+        return redirect('/dashboard')->with('msg', 'Você saiu do evento com sucesso!');
     }
 }
 
