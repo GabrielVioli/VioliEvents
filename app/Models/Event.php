@@ -25,4 +25,8 @@ class Event extends Model
         'items',
         'user_id'
     ];
+    public function users() {
+        return $this->belongsToMany('App\Models\User');
+    }
+
 }
