@@ -48,8 +48,14 @@
 
                 @endif
 
+                @csrf
+                <form action="/events/join/{{ $event->id }}" method="POST">
+                    @csrf
 
-                <a href="#" class="btn btn-primary" id="event-submit">Confirmar Presença</a>
+                    <button type="submit" class="btn btn-primary" id="event-submit">
+                        Confirmar Presença
+                    </button>
+                </form>
 
                 <div class="mt-4">
                     <h3>Sobre o evento:</h3>
